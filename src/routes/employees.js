@@ -26,4 +26,48 @@ router.get('/:id', (req,res)=>{
         }
     })
 })
+
+router.post("/", (req,res) =>{
+    const {id, fullname, functionEmployee} = req.body;
+    const query = `
+        CALL employeeAddorEdit(?, ?, ?)
+    `;
+    mysqlConeection.query(query, [id, fullname, functionEmployee], (err, rows, fields) =>{
+        if(!err){
+            res.json({Status: 'Employec Saved'})
+        }else{
+            console.log(err);
+        }
+
+    })
+
+})
+router.put('/:id', (req, res)=>{
+    const {fullname, functionEmployee} = req.body;
+    const {id} = req.params;
+    const query = `
+    CALL employeeAddorEdit(?, ?, ?)
+    `
+    mysqlconnection.query(query,[id, fullname, functionEmployee],(err, rows, fields) =>{
+        if(!err){
+            res.json({Status: 'Employee update'})
+        }
+        else{
+            console.log(err)
+        }
+    })
+})
+
+router.delete('/:id', (req, res)=>{
+    const {id} = req.params;
+    mysqlconnection.query('DELETE FROM employee WHERE id = ?',[id], (err, rows, fields)=>{
+        if(!err){
+            res.json({Status: 'Employee update'})
+        }
+        else{
+            console.log(err)
+        }
+
+    })
+})
 module.exports = router;
